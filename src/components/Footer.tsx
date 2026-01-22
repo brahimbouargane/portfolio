@@ -35,7 +35,7 @@ export default function Footer() {
             whileTap={{ scale: 0.95 }}
           >
             <span>Back to top</span>
-            <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-stone flex items-center justify-center group-hover:border-terracotta group-hover:bg-terracotta group-hover:text-white transition-all">
+            <span className="w-7 h-7 sm:w-8 sm:h-8  border border-stone flex items-center justify-center group-hover:border-terracotta group-hover:bg-terracotta group-hover:text-white transition-all">
               <ArrowUp size={12} className="sm:w-3.5 sm:h-3.5" />
             </span>
           </motion.button>
