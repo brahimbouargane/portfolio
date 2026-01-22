@@ -10,12 +10,19 @@ import Projects from "@/components/Projects";
 import Skills from "@/components/Skills";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import SkillsMarquee from "@/components/gsap/SkillsMarquee";
 
 // Dynamically import the 3D scene with no SSR
 const Scene3D = dynamic(() => import("@/components/Scene3D"), {
   ssr: false,
   loading: () => <div className="canvas-container bg-ivory dark:bg-ivory" />,
 });
+
+// Dynamically import the cursor follower (desktop only)
+const CursorFollower = dynamic(
+  () => import("@/components/gsap/CursorFollower"),
+  { ssr: false }
+);
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
@@ -36,6 +43,9 @@ export default function Home() {
 
   return (
     <>
+      {/* Custom Cursor (Desktop only) */}
+      {!isLoading && <CursorFollower />}
+
       {/* Loading Screen */}
       <AnimatePresence>
         {isLoading && (
@@ -78,6 +88,7 @@ export default function Home() {
         {/* Scrollable Content */}
         <div className="scroll-container">
           <Hero />
+          <SkillsMarquee />
           <About />
           <Projects />
           <Skills />

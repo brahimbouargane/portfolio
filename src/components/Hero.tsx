@@ -1,7 +1,9 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   ArrowDown,
   Download,
@@ -10,9 +12,15 @@ import {
   Mail,
   MapPin,
 } from "lucide-react";
+import { MagneticElement } from "./gsap";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
   const containerRef = useRef<HTMLElement>(null);
+  const nameRef = useRef<HTMLHeadingElement>(null);
+  const lastNameRef = useRef<HTMLHeadingElement>(null);
+  const lineRef = useRef<HTMLSpanElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const { scrollYProgress } = useScroll({
@@ -25,6 +33,60 @@ export default function Hero() {
 
   useEffect(() => {
     setIsLoaded(true);
+
+    // GSAP text animation for the name
+    const ctx = gsap.context(() => {
+      // Animate first name characters
+      if (nameRef.current) {
+        const chars = nameRef.current.textContent?.split("") || [];
+        nameRef.current.innerHTML = chars
+          .map(
+            (char) =>
+              `<span class="inline-block opacity-0 translate-y-full">${char}</span>`
+          )
+          .join("");
+
+        gsap.to(nameRef.current.querySelectorAll("span"), {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.05,
+          ease: "power3.out",
+          delay: 0.5,
+        });
+      }
+
+      // Animate last name characters
+      if (lastNameRef.current) {
+        const chars = lastNameRef.current.textContent?.split("") || [];
+        lastNameRef.current.innerHTML = chars
+          .map(
+            (char) =>
+              `<span class="inline-block opacity-0 translate-y-full">${char}</span>`
+          )
+          .join("");
+
+        gsap.to(lastNameRef.current.querySelectorAll("span"), {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.05,
+          ease: "power3.out",
+          delay: 0.7,
+        });
+      }
+
+      // Animate the accent line
+      if (lineRef.current) {
+        gsap.fromTo(
+          lineRef.current,
+          { width: 0 },
+          { width: "100px", duration: 0.8, ease: "power3.out", delay: 1.2 }
+        );
+      }
+    });
+
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -51,35 +113,30 @@ export default function Hero() {
           </div>
         </motion.div>
 
-        {/* Main title */}
+        {/* Main title with GSAP character animation */}
         <div className="mb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden"
-          >
-            <h1 className="font-display text-hero font-medium text-ink tracking-tight">
+          <div className="overflow-hidden">
+            <h1
+              ref={nameRef}
+              className="font-display text-hero font-medium text-ink tracking-tight"
+            >
               Brahim
             </h1>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden flex items-baseline gap-6"
-          >
-            <h1 className="font-display text-hero font-medium text-ink tracking-tight italic h-20 md:h-52">
+          <div className="overflow-hidden flex items-baseline gap-6">
+            <h1
+              ref={lastNameRef}
+              className="font-display text-hero font-medium text-ink tracking-tight italic h-20 md:h-52"
+            >
               Bouargane
             </h1>
-            <motion.span
-              initial={{ width: 0 }}
-              animate={isLoaded ? { width: "100px" } : {}}
-              transition={{ duration: 0.8, delay: 0.8 }}
+            <span
+              ref={lineRef}
               className="h-[2px] bg-terracotta hidden md:block"
+              style={{ width: 0 }}
             />
-          </motion.div>
+          </div>
         </div>
 
         {/* Subtitle and description */}
@@ -120,33 +177,33 @@ export default function Hero() {
               </span>
             </div>
 
-            {/* CTA Buttons */}
+            {/* CTA Buttons with Magnetic Effect */}
             <div className="flex flex-wrap gap-4">
-              <motion.a
-                href="#projects"
-                className="btn-primary inline-flex items-center gap-3"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <span>View Work</span>
-                <ArrowDown size={14} />
-              </motion.a>
+              <MagneticElement strength={0.2}>
+                <a
+                  href="#projects"
+                  className="btn-primary inline-flex items-center gap-3"
+                >
+                  <span>View Work</span>
+                  <ArrowDown size={14} />
+                </a>
+              </MagneticElement>
 
-              <motion.a
-                href="/brahim_bouargane_resume.pdf"
-                download
-                className="btn-outline inline-flex items-center gap-3"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Download size={14} />
-                <span>Resume</span>
-              </motion.a>
+              <MagneticElement strength={0.2}>
+                <a
+                  href="/brahim_bouargane_resume.pdf"
+                  download
+                  className="btn-outline inline-flex items-center gap-3"
+                >
+                  <Download size={14} />
+                  <span>Resume</span>
+                </a>
+              </MagneticElement>
             </div>
           </motion.div>
         </div>
 
-        {/* Social links */}
+        {/* Social links with Magnetic Effect */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={isLoaded ? { opacity: 1 } : {}}
@@ -174,21 +231,20 @@ export default function Hero() {
               label: "Email",
             },
           ].map((social) => (
-            <motion.a
-              key={social.label}
-              href={social.href}
-              target={social.icon !== Mail ? "_blank" : undefined}
-              rel={social.icon !== Mail ? "noopener noreferrer" : undefined}
-              className="group flex items-center justify-center w-10 h-10 border border-stone/50 hover:border-terracotta hover:bg-terracotta transition-all duration-300"
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              aria-label={social.label}
-            >
-              <social.icon
-                size={16}
-                className="text-charcoal/60 group-hover:text-white transition-colors"
-              />
-            </motion.a>
+            <MagneticElement key={social.label} strength={0.3}>
+              <a
+                href={social.href}
+                target={social.icon !== Mail ? "_blank" : undefined}
+                rel={social.icon !== Mail ? "noopener noreferrer" : undefined}
+                className="group flex items-center justify-center w-10 h-10 border border-stone/50 hover:border-terracotta hover:bg-terracotta transition-all duration-300"
+                aria-label={social.label}
+              >
+                <social.icon
+                  size={16}
+                  className="text-charcoal/60 group-hover:text-white transition-colors"
+                />
+              </a>
+            </MagneticElement>
           ))}
         </motion.div>
       </motion.div>
