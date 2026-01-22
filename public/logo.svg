@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <!-- B letter -->
+  <text
+    x="8"
+    y="62"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="64"
+    font-weight="600"
+    fill="currentColor"
+  >B</text>
+  <!-- Terracotta dot -->
+  <circle
+    cx="62"
+    cy="58"
+    r="7"
+    fill="#C65D3B"
+  />
+</svg>

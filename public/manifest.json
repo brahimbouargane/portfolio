@@ -1,0 +1,22 @@
+{
+  "name": "Brahim Bouargane | Fullstack Developer",
+  "short_name": "Brahim B.",
+  "description": "Brahim Bouargane is a creative Fullstack Developer from Casablanca, Morocco, specializing in React, Next.js, Node.js, and modern web technologies.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF8F5",
+  "theme_color": "#FAF8F5",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
